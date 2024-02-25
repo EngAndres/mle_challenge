@@ -29,5 +29,10 @@ After, in the predict service next steps had been made:
 
 ## Part III
 
+This step was pretty simple. After setup __GCP account__, some secrets are defined into __Github__ to avoid the exposure of sensible credentials data.
+Then, after a first deployment running, API url is defined into GCP. With this information, _Makefile_ is updated with API url.
+Some tests are performe to check API functionality.
 
 ## Part IV
+
+
