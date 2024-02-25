@@ -1,10 +1,12 @@
 """This file persist the API models data structure for the challenge"""
 
+# pylist: disable=import-error
+
 from typing import List
 from pydantic import BaseModel
 
 
-class Flight(BaseModel):
+class Flight(BaseModel): # pylint: disable=too-few-public-methods
     """Basic data structure for an only flight.
 
     Args:
@@ -16,7 +18,7 @@ class Flight(BaseModel):
     MES: int
 
 
-class Flights(BaseModel):
+class Flights(BaseModel): # pylint: disable=too-few-public-methods
     """Data structure of expect in the service calling body,
     a list of flights.
 

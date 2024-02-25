@@ -35,14 +35,17 @@ class DelayModel:
         night_min = datetime.strptime("00:00", "%H:%M").time()
         night_max = datetime.strptime("4:59", "%H:%M").time()
 
-        if date_time > morning_min and date_time < morning_max:
-            return "mañana"
-        elif date_time > afternoon_min and date_time < afternoon_max:
-            return "tarde"
-        elif (date_time > evening_min and date_time < evening_max) or (
-            date_time > night_min and date_time < night_max
+        period = ""
+        if morning_min < date_time < morning_max:
+            period = "mañana"
+        elif afternoon_min < date_time < afternoon_max:
+            period = "tarde"
+        elif (evening_min < date_time < evening_max) or (
+            night_min < date_time < night_max
         ):
-            return "noche"
+            period = "noche"
+
+        return period
 
     def is_high_season(self, fecha) -> bool:
         """This function returns 1 if the date is in high season, 0 otherwise.
@@ -65,14 +68,16 @@ class DelayModel:
         range4_max = datetime.strptime("30-Sep", "%d-%b").replace(year=fecha_anio)
 
         if (
-            (fecha >= range1_min and fecha <= range1_max)
-            or (fecha >= range2_min and fecha <= range2_max)
-            or (fecha >= range3_min and fecha <= range3_max)
-            or (fecha >= range4_min and fecha <= range4_max)
+            (range1_min <= fecha <= range1_max)
+            or (range2_min <= fecha <= range2_max)
+            or (range3_min <= fecha <= range3_max)
+            or (range4_min <= fecha <= range4_max)
         ):
-            return 1
+            high_season = 1
         else:
-            return 0
+            high_season = 0
+
+        return high_season
 
     def get_min_diff(self, data):
         """
@@ -92,7 +97,7 @@ class DelayModel:
     def train_model(self) -> None:
         """Train the model based on the data and right functions call."""
         # Load data
-        data = pd.read_csv("../data/data.csv", low_memory=False)
+        data = pd.read_csv("data/data.csv", low_memory=False)
 
         # Preprocess data
         features, target = self.preprocess(data, "delay")
