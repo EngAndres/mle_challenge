@@ -1,8 +1,8 @@
 """This file persist the API models data structure for the challenge"""
 
-# pylist: disable=import-error
 
 from typing import List
+# pylint: disable=no-name-in-module
 from pydantic import BaseModel
 
 
