@@ -1,3 +1,5 @@
+"""This file implements the webAPI for the challenge."""
+
 from fastapi import FastAPI
 import pandas as pd
 
