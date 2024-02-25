@@ -35,4 +35,21 @@ Some tests are performe to check API functionality.
 
 ## Part IV
 
+In this part, first a __.github__ folder is created, and inside there the __workflows__ folder is copied.
 
+Then, _ci.yml_ file is changed in a simple way. Every time a PR is send to main branch, this
+part of the gitflow is activated. The idea is to check the code using python 3.8, just to use
+a recent and very stable version. 
+Requirements are installed, adding __pylint__ and __black__ just to add both quiality code
+and formatter validation for code in order to keep good code practices, good standards, 
+independing of the developer. After, using makefile commands some test are scheduled. Finally,
+some commands to generate Docket image and deployed in register container in GoogleCloud are
+added. In this way, CI validate code quality, perform tests, and deploy image to cloud.
+
+In _cd.yml_ file a similar pipeline is created. Using python 3.8, dependencies had been installed, then some tests using makefiles commands had been performed.
+Then, some commands to setup cloud access and deploy a new API version using cloud run are
+added. In this way, CD perform tests, and deploy a new API version to be tested using a tool
+like __postman__.
+
+Finally, Dockerfile is changed just to generate a container image with the app with 
+basic requirements installed, and exposed in __port 80__ to make simple the servling of the model in the cloud run instance.
