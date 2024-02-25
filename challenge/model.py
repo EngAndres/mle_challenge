@@ -5,11 +5,11 @@ from typing import List
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.utils import shuffle
 import xgboost as xgb
 
 
 class DelayModel:
+    """Model to predict delays in flights."""
 
     def __init__(self):
         self._model = None  # Model should be saved in this attribute.
@@ -92,7 +92,7 @@ class DelayModel:
     def train_model(self) -> None:
         """Train the model based on the data and right functions call."""
         # Load data
-        data = pd.read_csv('data/data.csv')
+        data = pd.read_csv("../data/data.csv", low_memory=False)
 
         # Preprocess data
         features, target = self.preprocess(data, "delay")
@@ -105,9 +105,7 @@ class DelayModel:
         # Fit model
         self.fit(x_train, y_train)
 
-    def preprocess(
-        self, data: pd.DataFrame, target_column: str = None
-    ):
+    def preprocess(self, data: pd.DataFrame, target_column: str = None):
         """
         Prepare raw data for training or predict.
 
