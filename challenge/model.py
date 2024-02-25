@@ -92,7 +92,7 @@ class DelayModel:
     def train_model(self) -> None:
         """Train the model based on the data and right functions call."""
         # Load data
-        data = pd.read_csv("data/data.csv")
+        data = pd.read_csv('data/data.csv')
 
         # Preprocess data
         features, target = self.preprocess(data, "delay")
