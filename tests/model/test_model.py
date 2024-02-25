@@ -36,7 +36,7 @@ class TestModel(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.model = DelayModel()
-        self.data = pd.read_csv(filepath_or_buffer="../data/data.csv")
+        self.data = pd.read_csv(filepath_or_buffer="data/data.csv")
 
     def test_model_preprocess_for_training(self):
         """Test the preprocess method for training."""
@@ -52,7 +52,7 @@ class TestModel(unittest.TestCase):
 
     def test_model_preprocess_for_serving(self):
         """Test the preprocess method for serving."""
-        features = self.model.preprocess(data=self.data)
+        features, target = self.model.preprocess(data=self.data)
 
         assert isinstance(features, pd.DataFrame)
         assert features.shape[1] == len(self.FEATURES_COLS)
@@ -81,7 +81,7 @@ class TestModel(unittest.TestCase):
 
     def test_model_predict(self):
         """Test the predict method."""
-        features = self.model.preprocess(data=self.data)
+        features, target = self.model.preprocess(data=self.data)
 
         predicted_targets = self.model.predict(features=features)
 
