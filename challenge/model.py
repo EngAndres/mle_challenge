@@ -5,6 +5,7 @@ from typing import List
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix
 import xgboost as xgb
 
 
@@ -13,8 +14,9 @@ class DelayModel:
 
     def __init__(self):
         self._model = None  # Model should be saved in this attribute.
+        self.columns = []
         self.train_model()
-
+        
     def get_period_day(self, date) -> str:
         """
         Get period of the day from a date.
@@ -101,6 +103,7 @@ class DelayModel:
 
         # Preprocess data
         features, target = self.preprocess(data, "delay")
+        self.columns = features.columns
 
         # Generate training data, test data and target
         x_train, x_test, y_train, y_test = train_test_split(
@@ -109,6 +112,11 @@ class DelayModel:
 
         # Fit model
         self.fit(x_train, y_train)
+
+        # Just to check the model
+        y_preds = self.predict(x_test)
+        y_preds = [1 if y_pred > 0.5 else 0 for y_pred in y_preds]
+        print(confusion_matrix(y_test, y_preds))
 
     def preprocess(self, data: pd.DataFrame, target_column: str = None):
         """
@@ -130,7 +138,6 @@ class DelayModel:
 
         threshold_in_minutes = 15
         data["delay"] = np.where(data["min_diff"] > threshold_in_minutes, 1, 0)
-
         features = pd.concat(
             [
                 pd.get_dummies(data["OPERA"], prefix="OPERA"),
@@ -139,8 +146,8 @@ class DelayModel:
             ],
             axis=1,
         )
-        target = data[target_column]
-
+        target = data[[target_column]]
+        
         return features, target
 
     def fit(self, features: pd.DataFrame, target: pd.DataFrame) -> None:
@@ -172,4 +179,4 @@ class DelayModel:
         Returns:
             (List[int]): predicted targets.
         """
-        return list(self._model.predict(features))
+        return list(map(int, self._model.predict(features)))

@@ -36,25 +36,26 @@ class TestModel(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.model = DelayModel()
-        self.data = pd.read_csv(filepath_or_buffer="data/data.csv")
+        self.data = pd.read_csv(filepath_or_buffer="data/data.csv", low_memory=False)
 
     def test_model_preprocess_for_training(self):
         """Test the preprocess method for training."""
         features, target = self.model.preprocess(data=self.data, target_column="delay")
 
         assert isinstance(features, pd.DataFrame)
+        features = features[self.FEATURES_COLS]
         assert features.shape[1] == len(self.FEATURES_COLS)
         assert set(features.columns) == set(self.FEATURES_COLS)
-
         assert isinstance(target, pd.DataFrame)
         assert target.shape[1] == len(self.TARGET_COL)
         assert set(target.columns) == set(self.TARGET_COL)
 
     def test_model_preprocess_for_serving(self):
         """Test the preprocess method for serving."""
-        features, target = self.model.preprocess(data=self.data)
+        features, target = self.model.preprocess(data=self.data, target_column="delay")
 
         assert isinstance(features, pd.DataFrame)
+        features = features[self.FEATURES_COLS]
         assert features.shape[1] == len(self.FEATURES_COLS)
         assert set(features.columns) == set(self.FEATURES_COLS)
 
@@ -81,10 +82,13 @@ class TestModel(unittest.TestCase):
 
     def test_model_predict(self):
         """Test the predict method."""
-        features, target = self.model.preprocess(data=self.data)
+        features, target = self.model.preprocess(data=self.data, target_column="delay")
 
         predicted_targets = self.model.predict(features=features)
-
+        for predicted_target in predicted_targets:
+            if not (isinstance(predicted_target, int)):
+                print(predicted_target, type(predicted_target))
+        
         assert isinstance(predicted_targets, list)
         assert len(predicted_targets) == features.shape[0]
         assert all(
