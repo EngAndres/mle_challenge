@@ -22,7 +22,7 @@ In this case the process is simple.
 First, some docstrigs are added just to be alligned with _pylint_ verification.
 After, in the predict service next steps had been made:
 
-- Receive body data as a dict, and convert into a dataframe
+- Receive body data as a list of models, and convert into a dataframe keeping extected columns
 - Call predict function from the ML model, and save the list predictions in memory
 - Create a response dict with the expected key and the list as value
 - Return the response
