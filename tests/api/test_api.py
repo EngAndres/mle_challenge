@@ -4,7 +4,7 @@ This file contains the unit tests for the api services.
 
 import unittest
 from fastapi.testclient import TestClient
-from challenge import app
+from challenge import application as app
 
 
 class TestBatchPipeline(unittest.TestCase):
